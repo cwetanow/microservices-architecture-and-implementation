@@ -1,8 +1,14 @@
+using Basket.WebApi;
+using Basket.WebApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services
+    .AddStackExchangeRedisCache(opts => opts.Configuration = builder.Configuration["RedisConnectionString"])
+    .AddScoped<IBasketData, RedisBasketData>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,8 +22,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+app
+    .AddBasketRoutes()
+    .Run();
