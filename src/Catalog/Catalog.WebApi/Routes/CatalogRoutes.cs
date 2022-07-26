@@ -8,7 +8,7 @@ namespace Catalog.WebApi.Routes
     {
         public static WebApplication AddCatalogRoutes(this WebApplication application)
         {
-            const string BaseRoute = "/api/Products";
+            const string BaseRoute = "/api/v1/Products";
 
             application
                 .MapGet(BaseRoute,
