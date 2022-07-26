@@ -19,3 +19,9 @@ services:
       - catalogdb
     ports:
       - "8000:80"
+  basket.webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
