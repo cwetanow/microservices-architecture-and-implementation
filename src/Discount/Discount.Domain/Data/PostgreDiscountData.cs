@@ -16,6 +16,7 @@ namespace Discount.Domain.Data
         public async Task CreateDiscount(Coupon coupon)
         {
             using var connection = connectionFactory();
+            connection.Open();
 
             await connection.ExecuteAsync("INSERT INTO Coupon (ProductId, Description, Amount) VALUES (@ProductId, @Description, @Amount)",
                             coupon);
@@ -24,6 +25,7 @@ namespace Discount.Domain.Data
         public async Task<Coupon> GetDiscount(string productId)
         {
             using var connection = connectionFactory();
+            connection.Open();
 
             var coupon = await connection.QueryFirstOrDefaultAsync<Coupon>
                 ("SELECT * FROM Coupon WHERE ProductId = @ProductId", new { ProductId = productId });
@@ -34,6 +36,7 @@ namespace Discount.Domain.Data
         public async Task DeleteDiscount(string productId)
         {
             using var connection = connectionFactory();
+            connection.Open();
 
             await connection.ExecuteAsync("DELETE FROM Coupon WHERE ProductId = @ProductId", new { ProductId = productId });
         }
@@ -41,6 +44,7 @@ namespace Discount.Domain.Data
         public async Task UpdateDiscount(Coupon coupon)
         {
             using var connection = connectionFactory();
+            connection.Open();
 
             await connection.ExecuteAsync("UPDATE Coupon SET ProductName=@ProductName, Description = @Description, Amount = @Amount WHERE Id = @Id", coupon);
         }
