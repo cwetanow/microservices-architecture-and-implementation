@@ -64,6 +64,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - "RedisConnectionString=basketdb:6379"
+      - "DiscountGrpcServiceAddress:http://discount.grpc"
     depends_on:
       - catalogdb
     ports:
