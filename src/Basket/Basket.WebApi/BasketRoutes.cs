@@ -1,5 +1,6 @@
 ﻿using Basket.WebApi.Data;
 using Basket.WebApi.Entities;
+using Discount.Grpc.Protos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basket.WebApi
@@ -15,7 +16,16 @@ namespace Basket.WebApi
                 async (string userName, [FromServices] IBasketData data) => await data.GetShoppingCart(userName) ?? new ShoppingCart { User = userName });
 
             app
-                .MapPost(BaseRoute, async ([FromBody] ShoppingCart shoppingCart, [FromServices] IBasketData data) => await data.UpdateShoppingCart(shoppingCart));
+                .MapPost(BaseRoute, async ([FromBody] ShoppingCart shoppingCart, [FromServices] IBasketData data, [FromServices] DiscountProtoService.DiscountProtoServiceClient discountClient) =>
+                {
+                    foreach (var item in shoppingCart.Items)
+                    {
+                        var discount = await discountClient.GetDiscountAsync(new GetDiscountRequest { ProductId = item.ProductId });
+                        item.Price -= discount.Amount;
+                    }
+
+                    await data.UpdateShoppingCart(shoppingCart);
+                });
 
             app
                 .MapDelete(BaseRoute + "/{userName}", async (string userName, [FromServices] IBasketData data) => await data.Delete(userName));
