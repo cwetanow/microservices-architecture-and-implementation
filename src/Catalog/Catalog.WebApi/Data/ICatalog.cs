@@ -1,5 +1,4 @@
 ﻿using Catalog.WebApi.Entities;
-using MongoDB.Driver;
 
 namespace Catalog.WebApi.Data
 {
