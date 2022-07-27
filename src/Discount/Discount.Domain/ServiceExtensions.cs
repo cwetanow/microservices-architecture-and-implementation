@@ -1,5 +1,4 @@
 ﻿using Discount.Domain.Data;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using System.Data;
